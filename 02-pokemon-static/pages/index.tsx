@@ -1,5 +1,5 @@
 import type { NextPage, GetStaticProps } from "next";
-import { Button, Grid } from "@nextui-org/react";
+import { Grid } from "@nextui-org/react";
 import { MainLayout } from "../components/layouts";
 //debo llamarlo así porque en esta dirección ya no está como default sino exportada normalmente
 import { pokeApi } from "../api";
@@ -15,7 +15,6 @@ interface Props {
 const HomePage: NextPage<Props> = ({ pokemons }) => {
   //para graficar esto que digo que se renderiza de ambos lados si lo veo en el back aparece esto { prueba: 'undefined' }, en cambio en el cliente { prueba: 'object' } OJO
   /*   console.log({ prueba: typeof window }); */
-
   return (
     <MainLayout title="Lista de Pokemones">
       <Grid.Container gap={2} justify="flex-start">
