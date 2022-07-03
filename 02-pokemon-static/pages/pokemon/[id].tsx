@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { GetStaticProps, NextPage, GetStaticPaths } from "next";
 import { Button, Card, Container, Grid, Image, Text } from "@nextui-org/react";
 import { pokeApi } from "../../api";
@@ -6,20 +6,22 @@ import { MainLayout } from "../../components/layouts";
 import { Pokemon } from "../../interfaces";
 import { localStorageFavorites } from "../../utils";
 
-
 interface Props {
   pokemon: Pokemon;
 }
 
 const PokemonIdPage: NextPage<Props> = ({ pokemon }) => {
-
-  const [isInFavorites, setIsInFavorites] = useState(false)
+  const [isInFavorites, setIsInFavorites] = useState(false);
 
   //el localStorage existe en el front en el back no por eso lo pongo dentro de una funciòn al hacer click para que sea llamado solamente cuando clickeo la funciòn que esta del lado del cliente
   const onToggleFavorite = () => {
     localStorageFavorites.toggleFavorite(pokemon.id);
-    setIsInFavorites(localStorageFavorites.existPokemonInFavorites(pokemon.id))  
+    setIsInFavorites(!isInFavorites);
   };
+
+  useEffect(() => {
+    setIsInFavorites(localStorageFavorites.existPokemonInFavorites(pokemon.id));
+  }, [pokemon]);
 
   return (
     <MainLayout title={pokemon.name}>
@@ -49,8 +51,14 @@ const PokemonIdPage: NextPage<Props> = ({ pokemon }) => {
                 {pokemon.name}
               </Text>
 
-              <Button color="gradient" ghost={!isInFavorites} onClick={onToggleFavorite}>
-              {isInFavorites ? 'Eliminar de favoritos' : 'Agregar a favoritos'}
+              <Button
+                color="gradient"
+                ghost={!isInFavorites}
+                onClick={onToggleFavorite}
+              >
+                {isInFavorites
+                  ? "Eliminar de favoritos"
+                  : "Agregar a favoritos"}
               </Button>
             </Card.Header>
 
