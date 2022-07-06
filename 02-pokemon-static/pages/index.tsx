@@ -6,6 +6,11 @@ import { pokeApi } from "../api";
 import { PokemonListResponse, SmallPokemon } from "../interfaces";
 import { PokemonCard } from "../components/pokemon";
 
+
+
+//@types que vemos en el package.json por ej significan archivos de definicion de typescript
+
+
 interface Props {
   pokemons: SmallPokemon[];
 }
@@ -49,3 +54,5 @@ export const getStaticProps: GetStaticProps = async (ctx) => {
 };
 
 export default HomePage;
+
+

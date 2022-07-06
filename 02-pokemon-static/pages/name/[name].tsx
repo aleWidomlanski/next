@@ -2,21 +2,25 @@ import { useState, useEffect } from "react";
 import { GetStaticProps, NextPage, GetStaticPaths } from "next";
 import { Button, Card, Container, Grid, Image, Text } from "@nextui-org/react";
 import confetti from 'canvas-confetti'
+import { pokeApi } from "../../api";
 import { MainLayout } from "../../components/layouts";
-import { Pokemon } from "../../interfaces";
-import { getPokemonInfo, localStorageFavorites } from "../../utils";
+import { Pokemon} from "../../interfaces";
+import { localStorageFavorites } from "../../utils";
+import { PokemonListResponse, SmallPokemon } from '../../interfaces/pokemon-list';
+import { getPokemonInfo } from '../../utils/getPokemonInfo';
+
 
 interface Props {
   pokemon: Pokemon;
 }
 
-const PokemonIdPage: NextPage<Props> = ({ pokemon }) => {
+const PokemonNamePage: NextPage<Props> = ({ pokemon }) => {
 
   console.log(pokemon)
+  console.log('ooaa')
 
   const [isInFavorites, setIsInFavorites] = useState(false);
 
-  //el localStorage existe en el front en el back no por eso lo pongo dentro de una funciòn al hacer click para que sea llamado solamente cuando clickeo la funciòn que esta del lado del cliente
   const onToggleFavorite = () => {
     localStorageFavorites.toggleFavorite(pokemon.id);
     setIsInFavorites(!isInFavorites);
@@ -45,10 +49,10 @@ const PokemonIdPage: NextPage<Props> = ({ pokemon }) => {
           <Card hoverable css={{ padding: "30px" }}>
             <Card.Body>
               <Card.Image
-               src={
-                pokemon.sprites.other?.dream_world.front_default ||
-                "/no-image.png"
-              }
+                src={
+                  pokemon.sprites.other?.dream_world.front_default ||
+                  "/no-image.png"
+                }
                 alt={pokemon.name}
                 width="100%"
                 height={200}
@@ -114,28 +118,28 @@ const PokemonIdPage: NextPage<Props> = ({ pokemon }) => {
   );
 };
 
-//el del lado del servidor le digo a next que todos estos  paths van a ver
+
 export const getStaticPaths: GetStaticPaths = async (ctx) => {
-  //crea un array con 151 posiciones
-  const pokemon151 = [...Array(151)].map((e, index) => {
-    return {
-      //el id debe ser string porque es un string lo que hay en la url
-      params: { id: `${index + 1}` },
-    };
-  });
+
+    const { data } = await pokeApi.get<PokemonListResponse>(`/pokemon?limit=151`);
+
+  const pokemon151Name = data.results.map((e:SmallPokemon) => (
+  {params: { name: `${e.name}` }}
+  ))  
 
   return {
-    paths: pokemon151,
-    fallback: false, // si pongo true or 'blocking' me va a dejar entrar en un id que no existe, de esta modo en false tira un error 404
+    paths: pokemon151Name,
+    fallback: false, 
   };
 };
 
-//después que se ejecuta los paths pasa a GetStaticProps
-export const getStaticProps: GetStaticProps = async ({ params }) => {
-  //forma más fácil para algunos casos para definir el tipo de dato, el id es el que se ve en la url, que permite ser precargados en el getStaticPaths
-  const { id } = params as { id: string };
 
-  const pokemon =  await getPokemonInfo(id)
+export const getStaticProps: GetStaticProps = async ({ params }) => {
+ 
+  //se llama name en los  params porque el archivo se llama así 
+  const { name } = params as { name: string };
+
+  const pokemon = await getPokemonInfo(name)
 
   return {
     props: {
@@ -144,4 +148,4 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   };
 };
 
-export default PokemonIdPage;
+export default PokemonNamePage;
