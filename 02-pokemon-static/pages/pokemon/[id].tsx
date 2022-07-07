@@ -126,7 +126,9 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
 
   return {
     paths: pokemon151,
-    fallback: false, // si pongo true or 'blocking' me va a dejar entrar en un id que no existe, de esta modo en false tira un error 404
+    /*el blocking nos deja pasar al getStaticProps*/
+    fallback: 'blocking',
+/*     fallback: false, */ // si pongo true or 'blocking' me va a dejar entrar en un id que no existe, de esta modo en false tira un error 404
   };
 };
 
@@ -136,11 +138,24 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const { id } = params as { id: string };
 
   const pokemon =  await getPokemonInfo(id)
+ 
+  if( pokemon === undefined) {
+    return {
+      redirect: {
+        destination: '/',
+        //esto de permanent sirve para los robots o sea si pongo permanent en true, va a tomar que siempre se va a redirigir a la página y nunca va a cambiar y la posibilidad que se agregue
+        permanent: false
+      }
+    }
+  }
 
+  //si la página nueva existe en la petición en tiempo de producción me va a crear dicha página, y ya va a quedar creada por lo que si se vuelve a pedir no la va a volver a escribir ya toma la que se creo
   return {
     props: {
       pokemon
     },
+    //cada cuanto se va a regenerar esta función
+    revalidate: 86400 //60*60*24 (1día es eso no hagamos calcular a next)
   };
 };
 
