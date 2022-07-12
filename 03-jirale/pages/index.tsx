@@ -1,10 +1,38 @@
+import { Card, CardContent, CardHeader, Grid } from '@mui/material';
 import type { NextPage } from 'next'
-import { Typography } from '@mui/material'
+import { Layout } from '../components/layouts';
 
 
 const HomePage: NextPage = () => {
   return (
-    <Typography variant='h1' color='primary'>Hola Mundo</Typography>
+    <Layout title='Home - Jirale'>
+      <Grid container spacing={2}>
+        <Grid item xs={12} sm={4}>
+          <Card sx={{ height: 'calc(100vh-100px)' }}>
+            <CardHeader title='Pendientes' />
+            <CardContent>
+
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <Card sx={{ height: 'calc(100vh-100px)' }}>
+            <CardHeader title='En progreso' />
+            <CardContent>
+
+            </CardContent>
+          </Card>
+        </Grid>
+        <Grid item xs={12} sm={4}>
+          <Card sx={{ height: 'calc(100vh-100px)' }}>
+            <CardHeader title='Completadas' />
+            <CardContent>
+
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+    </Layout>
   )
 }
 
