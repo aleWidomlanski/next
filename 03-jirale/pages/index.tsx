@@ -1,35 +1,30 @@
-import { Card, CardContent, CardHeader, Grid } from '@mui/material';
-import type { NextPage } from 'next'
+import type { NextPage } from 'next';
+import { Card, CardHeader, Grid } from '@mui/material';
+
 import { Layout } from '../components/layouts';
 import { EntryList } from '../components/ui';
-import styles from './Home.module.css'
 
 const HomePage: NextPage = () => {
   return (
     <Layout title='Home - Jirale'>
-      <Grid container spacing={2}>
-        <Grid item xs={12} sm={4}>
-          <Card sx={{ height: 'calc(100vh-100px)' }} className={styles.card}>
-            <CardHeader title='Pendientes' className={styles.header}/ >
-            <CardContent className={styles.content}>
-              <EntryList status='pending'/>
-            </CardContent>
+      <Grid container spacing={ 2 }>
+
+        <Grid item xs={ 12 } sm={ 4 }>
+          <Card sx={{ height: 'calc(100vh - 100px )' }}>
+            <CardHeader title="Pendientes" />
+            <EntryList status='pending'/>
           </Card>
         </Grid>
-        <Grid item xs={12} sm={4}>
-          <Card sx={{ height: 'calc(100vh-100px)' }}>
-            <CardHeader title='En progreso' />
-            <CardContent>
-              <EntryList status='in-progress' />
-            </CardContent>
+        <Grid item xs={ 12 } sm={ 4 }>
+          <Card sx={{ height: 'calc(100vh - 100px )' }}>
+            <CardHeader title="En Progreso" />
+            <EntryList status='in-progress' />
           </Card>
         </Grid>
-        <Grid item xs={12} sm={4}>
-          <Card sx={{ height: 'calc(100vh-100px)' }}>
-            <CardHeader title='Completadas' />
-            <CardContent>
-              <EntryList status='finished' />
-            </CardContent>
+        <Grid item xs={ 12 } sm={ 4 }>
+          <Card sx={{ height: 'calc(100vh - 100px )' }}>
+            <CardHeader title="Completadas" />
+            <EntryList status='finished' />
           </Card>
         </Grid>
       </Grid>
@@ -37,4 +32,4 @@ const HomePage: NextPage = () => {
   )
 }
 
-export default HomePage
+export default HomePage;
