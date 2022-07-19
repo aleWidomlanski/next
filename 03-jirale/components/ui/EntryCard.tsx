@@ -14,7 +14,7 @@ export const EntryCard: FC<Props> = ({entry}) => {
             <CardActionArea>
                 <CardContent>
                     <Typography sx={{ whiteSpace: 'pre-line' }}>
-                        <h2>{entry.description}</h2>
+                        {entry.description}
                     </Typography>
                 </CardContent>
                 <CardActions sx={{display:'flex', justifyContent: 'end', paddingRight:2}}>
