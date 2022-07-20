@@ -1,6 +1,7 @@
 
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent, useState, useContext } from 'react';
 import { Box, Button, TextField } from '@mui/material'
+import { EntriesContext } from '../../context/entries';
 import SaveOutlinedIcon from '@mui/icons-material/SaveOutlined';
 import AddIcon from '@mui/icons-material/Add';
 
@@ -12,13 +13,18 @@ export const NewEntry = () => {
 
     const [touch, setTouch] = useState(false)
 
+    const {addNewEntry}= useContext(EntriesContext)
+
     const onTextFieldChanged = (event: ChangeEvent<HTMLInputElement>) => {
         setInputValue(event.target.value)
     }
 
     const onSave = () => {
         if(inputValue.length === 0) return;
-        console.log(inputValue)
+        addNewEntry(inputValue)
+        setIsAdding(false)
+        setInputValue('')
+        setTouch(false)
     }
 
 
