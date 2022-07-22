@@ -1,9 +1,11 @@
 import { createContext } from 'react';
 
 interface ContextProps {
-    sideMenuOpen: boolean;
-    openSideMenu: () => void,
+    sideMenuOpen: boolean
+    isAddingEntry: boolean
+    openSideMenu: () => void
     closeSideMenu: () => void
+    setIsAddingEntry: (args:boolean) => void
 }
 
 //creo el contexto para usar en el provider, y le digo que el value que va a compartir a sus hijos es del tipo ContextProps
